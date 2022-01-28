@@ -5,6 +5,9 @@ license:             BSD3
 author:              "Author name here"
 maintainer:          "example@example.com"
 copyright:           "2022 Author name here"
+category: Web
+synopsis: A library for using htmx with servant
+
 
 extra-source-files:
 - README.md
@@ -21,7 +24,6 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
-- aeson
 - servant
 - servant-server
 - text

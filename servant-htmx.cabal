@@ -6,7 +6,9 @@ cabal-version: 1.12
 
 name:           servant-htmx
 version:        0.1.0.0
+synopsis:       A library for using htmx with servant
 description:    Please see the README on GitHub at <https://github.com/githubuser/servant-htmx#readme>
+category:       Web
 homepage:       https://github.com/githubuser/servant-htmx#readme
 bug-reports:    https://github.com/githubuser/servant-htmx/issues
 author:         Author name here
@@ -32,8 +34,7 @@ library
   hs-source-dirs:
       src
   build-depends:
-      aeson
-    , base >=4.7 && <5
+      base >=4.7 && <5
     , servant
     , servant-server
     , text
@@ -47,8 +48,7 @@ executable servant-htmx-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aeson
-    , base >=4.7 && <5
+      base >=4.7 && <5
     , servant
     , servant-htmx
     , servant-server
@@ -64,8 +64,7 @@ test-suite servant-htmx-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aeson
-    , base >=4.7 && <5
+      base >=4.7 && <5
     , servant
     , servant-htmx
     , servant-server
