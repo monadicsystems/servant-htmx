@@ -6,7 +6,7 @@ cabal-version: 1.12
 
 name:           servant-htmx
 version:        0.1.0.1
-synopsis:       A library for using htmx with servant
+synopsis:       A library for using servant with htmx
 description:    Please see the README on GitHub at <https://github.com/MonadicSystems/servant-htmx#readme>
 category:       Web
 homepage:       https://github.com/MonadicSystems/servant-htmx#readme

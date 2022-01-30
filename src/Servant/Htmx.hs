@@ -13,13 +13,13 @@
 --
 -- -- | Example usage of htmx header types
 -- type ExampleAPI = HXRequest :> Get '[JSON] Text
---                :<|> HXTriggerId :> Post '[JSON] Text
---                :<|> "somePath" :> Get '[JSON] (Headers '[HXPush, HXRedirect] Text)
+--                :\<|\> HXTriggerId :> Post '[JSON] Text
+--                :\<|\> "somePath" :> Get '[JSON] (Headers '[HXPush, HXRedirect] Text)
 --
 -- exampleServer :: Server ExampleAPI
 -- exampleServer = exampleGetHandler
---              :<|> examplePostHandler
---              :<|> exampleSomePathHandler
+--              :\<|\> examplePostHandler
+--              :\<|\> exampleSomePathHandler
 --  where
 --    exampleGetHandler :: Maybe Text -> Handler Text
 --    exampleGetHandler mb = case mb of

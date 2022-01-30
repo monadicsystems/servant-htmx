@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Servant.Htmx</title><link href="ocean.css" rel="stylesheet" type="text/css" title="Ocean" /><link rel="stylesheet" type="text/css" href="quick-jump.css" /><script src="haddock-bundle.min.js" async="async" type="text/javascript"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script></head><body><div id="package-header"><ul class="links" id="page-menu"><li><a href="src/Servant.Htmx.html">Source</a></li><li><a href="/package/servant-htmx-0.1.0.1">Contents</a></li><li><a href="doc-index.html">Index</a></li></ul><p class="caption">servant-htmx-0.1.0.1: A library for using servant with htmx</p></div><div id="content"><div id="module-header"><table class="info"><tr><th>Safe Haskell</th><td>None</td></tr><tr><th>Language</th><td>Haskell2010</td></tr></table><p class="caption">Servant.Htmx</p></div><div id="description"><p class="caption">Description</p><div class="doc"><p>See <a href="https://htmx.org/reference/#request_headers">https://htmx.org/reference/#request_headers</a> and <a href="https://htmx.org/reference/#response_headers">https://htmx.org/reference/#response_headers</a>
+ to see all htmx request and response headers, and how to use them.</p><p>Example Servant API:</p><pre>module MyServer where
+
+import Servant.API
+import Servant.Server
+
+-- | Example usage of htmx header types
+type ExampleAPI = HXRequest :&gt; Get '[JSON] Text
+               :&lt;|&gt; HXTriggerId :&gt; Post '[JSON] Text
+               :&lt;|&gt; &quot;somePath&quot; :&gt; Get '[JSON] (Headers '[HXPush, HXRedirect] Text)
+
+exampleServer :: Server ExampleAPI
+exampleServer = exampleGetHandler
+             :&lt;|&gt; examplePostHandler
+             :&lt;|&gt; exampleSomePathHandler
+ where
+   exampleGetHandler :: Maybe Text -&gt; Handler Text
+   exampleGetHandler mb = case mb of
+     Just &quot;true&quot; -&gt; pure &quot;The request was sent to the server by htmx&quot;
+     _ -&gt; pure &quot;The request wasn't sent to the server by htmx&quot;
+
+   examplePostHandler :: Maybe Text -&gt; Handler Text
+   examplePostHandler mb = case mb of
+     Just &quot;adminPanel&quot; -&gt; pure &quot;The request was triggered by the admin panel&quot;
+     _ -&gt; pure &quot;The request wasn't triggered by the admin panel&quot;
+
+   exampleSomePathHandler :: Handler (Headers '[HXPush, HXRedirect] Text)
+   exampleSomePathHandler = pure $ noHeader $ addHeader &quot;someURLForRedirect&quot; &quot;This response has htmx headers&quot;
+
+exampleApp :: Application
+exampleApp = serve (Proxy :: Proxy ExampleAPI) exampleServer
+</pre></div></div><div id="interface"><h1>Documentation</h1><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:HXRequest" class="def">HXRequest</a> = Header &quot;HX-Request&quot; Text <a href="src/Servant.Htmx.html#HXRequest" class="link">Source</a> <a href="#t:HXRequest" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:HXTriggerId" class="def">HXTriggerId</a> = Header &quot;HX-Trigger&quot; Text <a href="src/Servant.Htmx.html#HXTriggerId" class="link">Source</a> <a href="#t:HXTriggerId" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:HXTriggerName" class="def">HXTriggerName</a> = Header &quot;HX-Trigger-Name&quot; Text <a href="src/Servant.Htmx.html#HXTriggerName" class="link">Source</a> <a href="#t:HXTriggerName" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:HXTarget" class="def">HXTarget</a> = Header &quot;HX-Target&quot; Text <a href="src/Servant.Htmx.html#HXTarget" class="link">Source</a> <a href="#t:HXTarget" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:HXPrompt" class="def">HXPrompt</a> = Header &quot;HX-Prompt&quot; Text <a href="src/Servant.Htmx.html#HXPrompt" class="link">Source</a> <a href="#t:HXPrompt" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:HXPush" class="def">HXPush</a> = Header &quot;HX-Push&quot; Text <a href="src/Servant.Htmx.html#HXPush" class="link">Source</a> <a href="#t:HXPush" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:HXRedirect" class="def">HXRedirect</a> = Header &quot;HX-Redirect&quot; Text <a href="src/Servant.Htmx.html#HXRedirect" class="link">Source</a> <a href="#t:HXRedirect" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:HXRefresh" class="def">HXRefresh</a> = Header &quot;HX-Refresh&quot; Text <a href="src/Servant.Htmx.html#HXRefresh" class="link">Source</a> <a href="#t:HXRefresh" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:HXTrigger" class="def">HXTrigger</a> = Header &quot;HX-Trigger&quot; Text <a href="src/Servant.Htmx.html#HXTrigger" class="link">Source</a> <a href="#t:HXTrigger" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:HXTriggerAfterSwap" class="def">HXTriggerAfterSwap</a> = Header &quot;HX-Trigger-After-Swap&quot; Text <a href="src/Servant.Htmx.html#HXTriggerAfterSwap" class="link">Source</a> <a href="#t:HXTriggerAfterSwap" class="selflink">#</a></p></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:HXTriggerAfterSettle" class="def">HXTriggerAfterSettle</a> = Header &quot;HX-Trigger-After-Settle&quot; Text <a href="src/Servant.Htmx.html#HXTriggerAfterSettle" class="link">Source</a> <a href="#t:HXTriggerAfterSettle" class="selflink">#</a></p></div></div></div><div id="footer"><p>Produced by <a href="http://www.haskell.org/haddock/">Haddock</a> version 2.22.0</p></div></body></html>
