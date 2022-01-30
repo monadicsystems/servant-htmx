@@ -1,12 +1,12 @@
 name:                servant-htmx
-version:             0.1.0.0
-github:              "githubuser/servant-htmx"
+version:             0.1.0.1
+github:              "MonadicSystems/servant-htmx"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2022 Author name here"
+author:              "Monadic Systems LLC"
+maintainer:          "tech@monadic.systems"
+copyright:           "2022 Monadic Systems LLC"
 category: Web
-synopsis: A library for using htmx with servant
+synopsis: A library for using servant with htmx
 
 
 extra-source-files:
@@ -20,11 +20,10 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/servant-htmx#readme>
+description:         Please see the README on GitHub at <https://github.com/MonadicSystems/servant-htmx#readme>
 
 dependencies:
 - base >= 4.7 && < 5
-- servant
 - servant-server
 - text
 
