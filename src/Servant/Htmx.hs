@@ -78,3 +78,9 @@ type HXTriggerAfterSwap = Header "HX-Trigger-After-Swap" Text
 type HXTriggerAfterSettle = Header "HX-Trigger-After-Settle" Text
 
 type HXBoosted = Header "HX-Boosted" Text
+
+type HXCurrentURL = Header "HX-Current-URL" Text
+
+type HXHistoryRestoreRequest = Header "HX-History-Restore-Request" Text
+
+type HXRetarget = Header "HX-Retarget" Text
