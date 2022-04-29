@@ -76,3 +76,5 @@ type HXTrigger = Header "HX-Trigger" Text
 type HXTriggerAfterSwap = Header "HX-Trigger-After-Swap" Text
 
 type HXTriggerAfterSettle = Header "HX-Trigger-After-Settle" Text
+
+type HXBoosted = Header "HX-Boosted" Text
