@@ -49,6 +49,10 @@ module Servant.Htmx
     HXTrigger,
     HXTriggerAfterSwap,
     HXTriggerAfterSettle,
+    HXBoosted,
+    HXCurrentURL,
+    HXHistoryRestoreRequest,
+    HXRetarget,
   )
 where
 
