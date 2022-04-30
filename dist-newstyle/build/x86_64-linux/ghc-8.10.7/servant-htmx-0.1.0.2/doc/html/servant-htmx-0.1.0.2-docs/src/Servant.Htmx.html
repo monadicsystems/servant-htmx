@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LANGUAGE DataKinds #-}</span><span>
+</span><span id="line-2"></span><span>
+</span><span id="line-3"></span><span class="hs-comment">-- | See &lt;https://htmx.org/reference/#request_headers&gt; and &lt;https://htmx.org/reference/#response_headers&gt;</span><span>
+</span><span id="line-4"></span><span class="hs-comment">-- to see all htmx request and response headers, and how to use them.</span><span>
+</span><span id="line-5"></span><span class="hs-comment">--</span><span>
+</span><span id="line-6"></span><span class="hs-comment">-- Example Servant API:</span><span>
+</span><span id="line-7"></span><span class="hs-comment">--</span><span>
+</span><span id="line-8"></span><span class="hs-comment">-- @</span><span>
+</span><span id="line-9"></span><span class="hs-comment">-- module MyServer where</span><span>
+</span><span id="line-10"></span><span class="hs-comment">--</span><span>
+</span><span id="line-11"></span><span class="hs-comment">-- import Servant.API</span><span>
+</span><span id="line-12"></span><span class="hs-comment">-- import Servant.Server</span><span>
+</span><span id="line-13"></span><span class="hs-comment">--</span><span>
+</span><span id="line-14"></span><span class="hs-comment">-- -- | Example usage of htmx header types</span><span>
+</span><span id="line-15"></span><span class="hs-comment">-- type ExampleAPI = HXRequest :&gt; Get '[JSON] Text</span><span>
+</span><span id="line-16"></span><span class="hs-comment">--                :\&lt;|\&gt; HXTriggerId :&gt; Post '[JSON] Text</span><span>
+</span><span id="line-17"></span><span class="hs-comment">--                :\&lt;|\&gt; &quot;somePath&quot; :&gt; Get '[JSON] (Headers '[HXPush, HXRedirect] Text)</span><span>
+</span><span id="line-18"></span><span class="hs-comment">--</span><span>
+</span><span id="line-19"></span><span class="hs-comment">-- exampleServer :: Server ExampleAPI</span><span>
+</span><span id="line-20"></span><span class="hs-comment">-- exampleServer = exampleGetHandler</span><span>
+</span><span id="line-21"></span><span class="hs-comment">--              :\&lt;|\&gt; examplePostHandler</span><span>
+</span><span id="line-22"></span><span class="hs-comment">--              :\&lt;|\&gt; exampleSomePathHandler</span><span>
+</span><span id="line-23"></span><span class="hs-comment">--  where</span><span>
+</span><span id="line-24"></span><span class="hs-comment">--    exampleGetHandler :: Maybe Text -&gt; Handler Text</span><span>
+</span><span id="line-25"></span><span class="hs-comment">--    exampleGetHandler mb = case mb of</span><span>
+</span><span id="line-26"></span><span class="hs-comment">--      Just &quot;true&quot; -&gt; pure &quot;The request was sent to the server by htmx&quot;</span><span>
+</span><span id="line-27"></span><span class="hs-comment">--      _ -&gt; pure &quot;The request wasn't sent to the server by htmx&quot;</span><span>
+</span><span id="line-28"></span><span class="hs-comment">--</span><span>
+</span><span id="line-29"></span><span class="hs-comment">--    examplePostHandler :: Maybe Text -&gt; Handler Text</span><span>
+</span><span id="line-30"></span><span class="hs-comment">--    examplePostHandler mb = case mb of</span><span>
+</span><span id="line-31"></span><span class="hs-comment">--      Just &quot;adminPanel&quot; -&gt; pure &quot;The request was triggered by the admin panel&quot;</span><span>
+</span><span id="line-32"></span><span class="hs-comment">--      _ -&gt; pure &quot;The request wasn't triggered by the admin panel&quot;</span><span>
+</span><span id="line-33"></span><span class="hs-comment">--</span><span>
+</span><span id="line-34"></span><span class="hs-comment">--    exampleSomePathHandler :: Handler (Headers '[HXPush, HXRedirect] Text)</span><span>
+</span><span id="line-35"></span><span class="hs-comment">--    exampleSomePathHandler = pure $ noHeader $ addHeader &quot;someURLForRedirect&quot; &quot;This response has htmx headers&quot;</span><span>
+</span><span id="line-36"></span><span class="hs-comment">--</span><span>
+</span><span id="line-37"></span><span class="hs-comment">-- exampleApp :: Application</span><span>
+</span><span id="line-38"></span><span class="hs-comment">-- exampleApp = serve (Proxy :: Proxy ExampleAPI) exampleServer</span><span>
+</span><span id="line-39"></span><span class="hs-comment">-- @</span><span>
+</span><span id="line-40"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Servant.Htmx</span><span>
+</span><span id="line-41"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="Servant.Htmx.html#HXRequest"><span class="hs-identifier">HXRequest</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-42"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXTriggerId"><span class="hs-identifier">HXTriggerId</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-43"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXTriggerName"><span class="hs-identifier">HXTriggerName</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-44"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXTarget"><span class="hs-identifier">HXTarget</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-45"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXPrompt"><span class="hs-identifier">HXPrompt</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-46"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXPush"><span class="hs-identifier">HXPush</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-47"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXRedirect"><span class="hs-identifier">HXRedirect</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-48"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXRefresh"><span class="hs-identifier">HXRefresh</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-49"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXTrigger"><span class="hs-identifier">HXTrigger</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-50"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXTriggerAfterSwap"><span class="hs-identifier">HXTriggerAfterSwap</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-51"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXTriggerAfterSettle"><span class="hs-identifier">HXTriggerAfterSettle</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-52"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXBoosted"><span class="hs-identifier">HXBoosted</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-53"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXCurrentURL"><span class="hs-identifier">HXCurrentURL</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-54"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXHistoryRestoreRequest"><span class="hs-identifier">HXHistoryRestoreRequest</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-55"></span><span>    </span><span class="annot"><a href="Servant.Htmx.html#HXRetarget"><span class="hs-identifier">HXRetarget</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-56"></span><span>  </span><span class="hs-special">)</span><span>
+</span><span id="line-57"></span><span class="hs-keyword">where</span><span>
+</span><span id="line-58"></span><span>
+</span><span id="line-59"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Text</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Text</span></span><span class="hs-special">)</span><span>
+</span><span id="line-60"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Servant</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Header</span></span><span class="hs-special">)</span><span>
+</span><span id="line-61"></span><span>
+</span><span id="line-62"></span><span class="hs-keyword">type</span><span> </span><span id="HXRequest"><span class="annot"><a href="Servant.Htmx.html#HXRequest"><span class="hs-identifier hs-var">HXRequest</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Request&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-63"></span><span>
+</span><span id="line-64"></span><span class="hs-keyword">type</span><span> </span><span id="HXTriggerId"><span class="annot"><a href="Servant.Htmx.html#HXTriggerId"><span class="hs-identifier hs-var">HXTriggerId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Trigger&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-65"></span><span>
+</span><span id="line-66"></span><span class="hs-keyword">type</span><span> </span><span id="HXTriggerName"><span class="annot"><a href="Servant.Htmx.html#HXTriggerName"><span class="hs-identifier hs-var">HXTriggerName</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Trigger-Name&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-67"></span><span>
+</span><span id="line-68"></span><span class="hs-keyword">type</span><span> </span><span id="HXTarget"><span class="annot"><a href="Servant.Htmx.html#HXTarget"><span class="hs-identifier hs-var">HXTarget</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Target&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-69"></span><span>
+</span><span id="line-70"></span><span class="hs-keyword">type</span><span> </span><span id="HXPrompt"><span class="annot"><a href="Servant.Htmx.html#HXPrompt"><span class="hs-identifier hs-var">HXPrompt</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Prompt&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-71"></span><span>
+</span><span id="line-72"></span><span class="hs-keyword">type</span><span> </span><span id="HXPush"><span class="annot"><a href="Servant.Htmx.html#HXPush"><span class="hs-identifier hs-var">HXPush</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Push&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-73"></span><span>
+</span><span id="line-74"></span><span class="hs-keyword">type</span><span> </span><span id="HXRedirect"><span class="annot"><a href="Servant.Htmx.html#HXRedirect"><span class="hs-identifier hs-var">HXRedirect</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Redirect&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-75"></span><span>
+</span><span id="line-76"></span><span class="hs-keyword">type</span><span> </span><span id="HXRefresh"><span class="annot"><a href="Servant.Htmx.html#HXRefresh"><span class="hs-identifier hs-var">HXRefresh</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Refresh&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-77"></span><span>
+</span><span id="line-78"></span><span class="hs-keyword">type</span><span> </span><span id="HXTrigger"><span class="annot"><a href="Servant.Htmx.html#HXTrigger"><span class="hs-identifier hs-var">HXTrigger</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Trigger&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-79"></span><span>
+</span><span id="line-80"></span><span class="hs-keyword">type</span><span> </span><span id="HXTriggerAfterSwap"><span class="annot"><a href="Servant.Htmx.html#HXTriggerAfterSwap"><span class="hs-identifier hs-var">HXTriggerAfterSwap</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Trigger-After-Swap&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-81"></span><span>
+</span><span id="line-82"></span><span class="hs-keyword">type</span><span> </span><span id="HXTriggerAfterSettle"><span class="annot"><a href="Servant.Htmx.html#HXTriggerAfterSettle"><span class="hs-identifier hs-var">HXTriggerAfterSettle</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Trigger-After-Settle&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-83"></span><span>
+</span><span id="line-84"></span><span class="hs-keyword">type</span><span> </span><span id="HXBoosted"><span class="annot"><a href="Servant.Htmx.html#HXBoosted"><span class="hs-identifier hs-var">HXBoosted</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Boosted&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-85"></span><span>
+</span><span id="line-86"></span><span class="hs-keyword">type</span><span> </span><span id="HXCurrentURL"><span class="annot"><a href="Servant.Htmx.html#HXCurrentURL"><span class="hs-identifier hs-var">HXCurrentURL</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Current-URL&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-87"></span><span>
+</span><span id="line-88"></span><span class="hs-keyword">type</span><span> </span><span id="HXHistoryRestoreRequest"><span class="annot"><a href="Servant.Htmx.html#HXHistoryRestoreRequest"><span class="hs-identifier hs-var">HXHistoryRestoreRequest</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-History-Restore-Request&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-89"></span><span>
+</span><span id="line-90"></span><span class="hs-keyword">type</span><span> </span><span id="HXRetarget"><span class="annot"><a href="Servant.Htmx.html#HXRetarget"><span class="hs-identifier hs-var">HXRetarget</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Header</span></span><span> </span><span class="annot"><span class="hs-string">&quot;HX-Retarget&quot;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-91"></span></pre></body></html>

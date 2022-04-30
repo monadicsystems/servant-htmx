@@ -1,5 +1,5 @@
 name:                servant-htmx
-version:             0.1.0.1
+version:             0.1.0.2
 github:              "MonadicSystems/servant-htmx"
 license:             BSD3
 author:              "Monadic Systems LLC"
